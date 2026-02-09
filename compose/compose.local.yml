@@ -1,17 +1,5 @@
 ﻿version: "3.9"
-
 services:
-  backend:
-    container_name: backend
-    build:
-      context: ..
-      dockerfile: docker/Dockerfile
-    ports:
-      - "8080:8080"
-    restart: unless-stopped
-    depends_on:
-      - postgres
-
   postgres:
     image: postgres:16
     container_name: db-postgre-local
