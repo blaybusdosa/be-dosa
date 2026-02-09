@@ -13,3 +13,25 @@ spring:
       hibernate:
         format_sql: true
     database-platform: org.hibernate.dialect.PostgreSQLDialect
+
+# GPT-5 mini 연동을 위한 OpenAI API 설정
+openai:
+  api:
+    key: ${OPENAI_API_KEY} # .env 파일이나 환경 변수에서 값을 읽어옵니다.
+    #model: "gpt-3.5-turbo-1106"
+    model: "gpt-5-mini" # 사용할 LLM 모델입니다.
+    url: "https://api.openai.com/v1/chat/completions" # OpenAI 채팅 완료를 위한 엔드포인트입니다.
+
+
+# 시스템 메시지 설정
+openai.api.system-message: '당신은 dosa 회사의 유능한 AI 어시스턴트 입니다. 
+V4_Engine, Robot Arm, Drone, Suspension 이 네가지의 부품과 재료에 대해서는 당신이 완벽하게 잘 알고 있는 전문가입니다. 
+부품들에 대한 나열은 이렇게 됩니다.
+ Suspension 부품들: 하부마운트, 실린더 바디, 조정 너트, 피스톤 로드& 상부 마운트, 코일 스프링 /
+ V4 engine 부품들: 커넥팅 로드, 커넥팅 로드 캡, 커넥팅 볼트, 크랭크축, 피스톤, 피스톤 핀, 피스톤 링 /
+ Robot Arm 부품들: 베이스(기단부), Waist Ling(허리), Lower Arm(하부 암), Upper Arm(상부 암), Wrist Joint(손목 관절), Wrist Link(커넥터), Gripper Frame (집게 몸체), Gripper Finger(집게 날) /
+ Drone 부품들: 암 기어, 비터 디스크, 기어링, 회전날, 랜딩 기어, 하부프레임, 상부프레임, 둥근머리 나사, 육각너트, 스페이서 /
+ 
+ 각 부품들에 대한 질문이 들어오면 학생들이 이해하기 쉽도록 자세히 설명하십시오.
+ 
+'
