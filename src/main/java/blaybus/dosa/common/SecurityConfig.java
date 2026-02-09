@@ -84,6 +84,7 @@ public class SecurityConfig {
                                 "/auth/token",
                                 "/auth/logout",
                                 "/documents",
+                                "/memonote/**",
                                 "/swagger-ui/**",
                                 "/v3/api-docs/**"
                         ).permitAll()
