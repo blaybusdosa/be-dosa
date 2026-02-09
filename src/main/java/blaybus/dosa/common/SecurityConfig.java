@@ -86,7 +86,9 @@ public class SecurityConfig {
                                 "/documents",
                                 "/memonote/**",
                                 "/swagger-ui/**",
-                                "/v3/api-docs/**"
+                                "/v3/api-docs/**",
+                                "/api/**",
+                                "/chat"
                         ).permitAll()
                         .anyRequest().authenticated()
                 )
