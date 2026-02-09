@@ -22,7 +22,7 @@ jobs:
           ssh ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_HOST }} << 'EOF'
             set -e
 
-            cd /srv/app
+            cd /srv/app/be-dosa
             git pull origin main
 
             cd compose
