@@ -89,7 +89,9 @@ public class SecurityConfig {
                                 "/v3/api-docs/**",
                                 "/api/**",
                                 "/chat",
-                                "/progress/**"
+                                "/progress/**",
+                                "/conversations",
+                                "/conversations/**"
                         ).permitAll()
                         .anyRequest().authenticated()
                 )

@@ -4,12 +4,15 @@ package blaybus.dosa.callLLM;
 import blaybus.dosa.callLLM.dto.ChatRequest;
 import blaybus.dosa.callLLM.dto.ChatResponse;
 import blaybus.dosa.callLLM.dto.Message;
+import blaybus.dosa.callLLM.entity.LLMConversationEntity;
+import blaybus.dosa.callLLM.repository.LLMConversationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  * GPT-5 mini (LLM) API와 통신을 담당하는 서비스 클래스입니다.
@@ -36,9 +39,12 @@ public class CallLLMService {
      * CallLLMService의 생성자로, 구성된 RestTemplate을 주입합니다.
      * @param restTemplate API 키 인터셉터로 구성된 RestTemplate 인스턴스.
      */
+    private final LLMConversationRepository llmConversationRepository;
+
     @Autowired
-    public CallLLMService(RestTemplate restTemplate) {
+    public CallLLMService(RestTemplate restTemplate, LLMConversationRepository llmConversationRepository) {
         this.restTemplate = restTemplate;
+        this.llmConversationRepository = llmConversationRepository;
     }
 
     /**
@@ -64,8 +70,45 @@ public class CallLLMService {
             throw new IllegalStateException("LLM으로부터 유효한 응답을 받지 못했습니다.");
         }
 
-        // 첫 번째 선택지 메시지의 내용을 추출하여 반환합니다.
-        return response.getChoices().get(0).getMessage().getContent();
+        // 첫 번째 선택지 메시지의 내용을 추출합니다.
+        String llmResponseContent = response.getChoices().get(0).getMessage().getContent();
+
+        // LLM 대화 내용을 데이터베이스에 저장합니다.
+        LLMConversationEntity conversation = new LLMConversationEntity(prompt, llmResponseContent);
+        llmConversationRepository.save(conversation);
+
+        // LLM 응답 메시지 내용을 반환합니다.
+        return llmResponseContent;
+    }
+
+    /**
+     * 저장된 모든 LLM 대화 기록을 조회합니다.
+     * @return 모든 LLM 대화 기록 목록.
+     */
+    public List<LLMConversationEntity> getAllConversations() {
+        return llmConversationRepository.findAll();
+    }
+
+    /**
+     * ID를 사용하여 특정 LLM 대화 기록을 조회합니다.
+     * @param id 조회할 대화 기록의 ID.
+     * @return 지정된 ID를 가진 LLM 대화 기록 (존재하지 않으면 Optional.empty()).
+     */
+    public Optional<LLMConversationEntity> getConversationById(Long id) {
+        return llmConversationRepository.findById(id);
+    }
+
+    /**
+     * ID를 사용하여 특정 LLM 대화 기록을 삭제합니다.
+     * @param id 삭제할 대화 기록의 ID.
+     * @return 삭제 성공 여부.
+     * @throws IllegalStateException 지정된 ID의 대화 기록을 찾을 수 없는 경우.
+     */
+    public void deleteConversationById(Long id) {
+        if (!llmConversationRepository.existsById(id)) {
+            throw new IllegalStateException("ID " + id + "에 해당하는 대화 기록을 찾을 수 없어 삭제할 수 없습니다.");
+        }
+        llmConversationRepository.deleteById(id);
     }
 
 
