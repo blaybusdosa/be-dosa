@@ -12,7 +12,7 @@ import java.util.Optional;
  */
 @Repository
 public interface LLMConversationRepository extends JpaRepository<LLMConversationEntity, Long> {
-    List<LLMConversationEntity> findByUser_Id(Long userId);
-    Optional<LLMConversationEntity> findByIdAndUser_Id(Long id, Long userId);
-    void deleteByUser_Id(Long userId);
+    List<LLMConversationEntity> findByUserId(Long userId);
+    Optional<LLMConversationEntity> findByIdAndUserId(Long id, Long userId);
+    void deleteByUserId(Long userId);
 }
