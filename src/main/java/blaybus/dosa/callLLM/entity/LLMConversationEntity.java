@@ -5,7 +5,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import java.time.LocalDateTime;
-import blaybus.dosa.user.UserEntity;
 
 @Entity
 @Table(name = "llm_conversations")
@@ -18,9 +17,8 @@ public class LLMConversationEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id", nullable = false)
-    private UserEntity user;
+    @Column(name = "user_id", nullable = false)
+    private Long userId;
 
     @Column(nullable = false, columnDefinition = "TEXT")
     private String prompt;
@@ -36,8 +34,8 @@ public class LLMConversationEntity {
         timestamp = LocalDateTime.now();
     }
 
-    public LLMConversationEntity(UserEntity user, String prompt, String response) {
-        this.user = user;
+    public LLMConversationEntity(Long userId, String prompt, String response) {
+        this.userId = userId;
         this.prompt = prompt;
         this.response = response;
     }
