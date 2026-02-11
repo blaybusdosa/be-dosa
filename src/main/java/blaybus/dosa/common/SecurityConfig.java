@@ -88,6 +88,7 @@ public class SecurityConfig {
                                 "/swagger-ui/**",
                                 "/v3/api-docs/**",
                                 "/api/**",
+                                "/callLLM/**",
                                 "/chat",
                                 "/progress/**",
                                 "/conversations",
