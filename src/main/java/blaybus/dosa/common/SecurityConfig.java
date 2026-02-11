@@ -78,6 +78,7 @@ public class SecurityConfig {
                                 "/callLLM/**",
                                 "/chat", // No trailing slash
                                 "/chat/", // With trailing slash, for robustness
+                                "/chat/**",
                                 "/progress/**",
                                 "/conversations",
                                 "/conversations/**"
@@ -145,6 +146,7 @@ public class SecurityConfig {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration config = new CorsConfiguration();
+       // config.setAllowedOrigins(List.of(frontendBaseUrl));
         // Allow the Netlify frontend URL
         List<String> allowedOrigins = new java.util.ArrayList<>();
         if (frontendBaseUrl != null && !frontendBaseUrl.isEmpty()) {
