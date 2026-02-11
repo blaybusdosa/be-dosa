@@ -228,3 +228,9 @@ $RECYCLE.BIN/
 *.lnk
 
 # End of https://www.toptal.com/developers/gitignore/api/java,intellij+all,windows,macos,linux
+
+# Env / secrets
+.env
+.env.*
+!.env.example
+!.env.sample
