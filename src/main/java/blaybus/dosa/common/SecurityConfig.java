@@ -81,7 +81,8 @@ public class SecurityConfig {
                                 "/chat/**",
                                 "/progress/**",
                                 "/conversations",
-                                "/conversations/**"
+                                "/conversations/**",
+                                "/error"
 
                         ).permitAll()
                         .anyRequest().authenticated()
