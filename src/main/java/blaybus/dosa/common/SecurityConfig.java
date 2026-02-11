@@ -88,10 +88,13 @@ public class SecurityConfig {
                                 "/swagger-ui/**",
                                 "/v3/api-docs/**",
                                 "/api/**",
-                                "/chat",
+                                "/callLLM/**",
+                                "/chat", // No trailing slash
+                                "/chat/", // With trailing slash, for robustness
                                 "/progress/**",
                                 "/conversations",
                                 "/conversations/**"
+
                         ).permitAll()
                         .anyRequest().authenticated()
                 )
@@ -166,7 +169,14 @@ public class SecurityConfig {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration config = new CorsConfiguration();
-        config.setAllowedOrigins(List.of(frontendBaseUrl));
+        // Allow the Netlify frontend URL
+        List<String> allowedOrigins = new java.util.ArrayList<>();
+        if (frontendBaseUrl != null && !frontendBaseUrl.isEmpty()) {
+            allowedOrigins.add(frontendBaseUrl);
+        }
+        allowedOrigins.add("https://blaybus-paper-dot.netlify.app/");
+        // Add other necessary origins if any
+        config.setAllowedOrigins(allowedOrigins);
         config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
         config.setAllowedHeaders(List.of("*"));
         config.setAllowCredentials(true); // 쿠키 포함 허용
